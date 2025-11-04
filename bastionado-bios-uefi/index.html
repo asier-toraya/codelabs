@@ -1,0 +1,128 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Bastionado de BIOS/UEFI</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="bastionado-bios-uefi"
+                  title="Bastionado de BIOS/UEFI"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Fundamentación teórica" duration="0">
+        <p>El <strong>arranque seguro</strong> de un sistema comienza desde la BIOS o UEFI, encargada de reconocer el hardware y decidir qué dispositivo iniciará primero.</p>
+<p>Una configuración correcta en este nivel evita accesos no autorizados y ataques físicos al equipo.</p>
+<p><strong>Nota:</strong> La BIOS (Basic Input/Output System) es el firmware tradicional presente en equipos más antiguos, mientras que <strong>UEFI (Unified Extensible Firmware Interface)</strong> es su sucesor moderno, ofreciendo interfaz gráfica, soporte para discos grandes (GPT) y mayor seguridad gracias a funciones como <strong>Secure Boot</strong> o <strong>TPM (Trusted Platform Module)</strong>.</p>
+<p><strong>Riesgos comunes si no se realiza un bastionado adecuado:</strong></p>
+<ul>
+<li>Acceso físico no autorizado para modificar el orden de arranque.</li>
+<li>Instalación de software malicioso antes del sistema operativo (ataques tipo <em>bootkit</em> o <em>rootkit</em>).</li>
+<li>Clonado o extracción de datos desde medios externos.</li>
+<li>Desactivación de medidas de seguridad como <em>Secure Boot</em> o <em>TPM</em>.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Bastionado de BIOS/UEFI" duration="0">
+        <h2 is-upgraded>2.1. Configuración de la contraseña de usuario o Power-On</h2>
+<p><strong>Objetivo:<br></strong> Evitar que el sistema arranque sin autenticación.</p>
+<p><strong>Pasos:</strong></p>
+<ol type="1">
+<li>Reinicia el equipo y accede a la BIOS/UEFI presionando la tecla correspondiente (por ejemplo, <code>F2</code>, <code>DEL</code>, o <code>ESC</code> según el fabricante).</li>
+<li>Entra al menú <strong>Security</strong> o <strong>Password Settings</strong>.</li>
+<li>Busca la opción <strong>Power-On Password</strong> o <strong>User Password</strong>.</li>
+<li>Introduce una contraseña segura y confírmala.</li>
+<li>Guarda los cambios y reinicia el sistema (<code>F10</code> o &#34;Save &amp; Exit&#34;).</li>
+</ol>
+<p><strong>Resultado:<br></strong> Cada vez que se inicie el equipo, se pedirá la contraseña antes de cargar cualquier sistema operativo.</p>
+<p class="image-container"><img alt="Configuración de Power-On Password" src="img\\1bf308df05e77563.png"></p>
+<p><strong>Consejo adicional:</strong> Utiliza una contraseña alfanumérica con al menos 8 caracteres. Evita usar contraseñas similares a la del sistema operativo. En algunos equipos, la BIOS puede bloquearse por varios intentos fallidos, por lo que conviene mantener un registro seguro de la clave.</p>
+<h2 is-upgraded>2.2. Configuración de la contraseña de administrador</h2>
+<p><strong>Objetivo:<br></strong> Proteger la configuración interna de la BIOS/UEFI.</p>
+<p><strong>Pasos:</strong></p>
+<ol type="1">
+<li>Accede nuevamente a la BIOS/UEFI.</li>
+<li>Ve a <strong>Security &gt; Administrator Password</strong> o <strong>Supervisor Password</strong>.</li>
+<li>Crea una contraseña distinta de la del arranque.</li>
+<li>Guarda los cambios y reinicia.</li>
+</ol>
+<p><strong>Resultado:<br></strong> Solo quien conozca la contraseña de administrador podrá modificar la configuración de la BIOS/UEFI.</p>
+<p class="image-container"><img alt="Configuración de contraseña de administrador" src="img\\f03c8312480e645.png"></p>
+<p><strong>Importante:</strong> La contraseña de administrador no impide el arranque del equipo, pero <strong>bloquea cambios críticos</strong> como el orden de arranque, la activación/desactivación de <em>Secure Boot</em> o la gestión del TPM. En entornos empresariales, esta contraseña suele gestionarse de forma centralizada mediante políticas de seguridad.</p>
+<h2 is-upgraded>2.3. Evitar el arranque desde dispositivos externos</h2>
+<p><strong>Objetivo:</strong> Impedir que alguien acceda al sistema mediante un USB o DVD externo.</p>
+<p><strong>Pasos:</strong></p>
+<ol type="1">
+<li>Accede a la BIOS/UEFI.</li>
+<li>Entra en <strong>Boot Settings</strong> o <strong>Boot Options</strong>.</li>
+<li>Deshabilita las opciones de arranque desde:<ul>
+<li><strong>USB</strong></li>
+<li><strong>CD/DVD</strong></li>
+<li><strong>Network Boot (PXE)</strong></li>
+</ul>
+</li>
+<li>Guarda los cambios y reinicia.</li>
+</ol>
+<p><strong>Resultado:</strong> El equipo solo podrá arrancar desde el disco interno configurado como principal.</p>
+<p class="image-container"><img alt="Configuración de arranque desde disco interno" src="img\\1bb6f14b0e401522.png"></p>
+<p><strong>Recomendación adicional:</strong> Si en algún momento se necesita arrancar desde un medio externo (por ejemplo, para mantenimiento o recuperación), es posible <strong>habilitar temporalmente</strong> el arranque USB solo bajo supervisión del administrador.</p>
+<h2 is-upgraded>2.4. Establecer un orden de arranque seguro.</h2>
+<p><strong>Objetivo:<br></strong> Asegurar que el sistema operativo legítimo sea el primero en ejecutarse.</p>
+<p><strong>Pasos:</strong></p>
+<ol type="1">
+<li>En la BIOS/UEFI, entra en el menú <strong>Boot Order</strong> o <strong>Boot Priority</strong>.</li>
+<li>Coloca el <strong>disco duro principal (HDD/SSD)</strong> en la primera posición.</li>
+<li>Deja los demás dispositivos deshabilitados o en segundo lugar.</li>
+<li>Guarda los cambios y reinicia.</li>
+</ol>
+<p><strong>Resultado:<br></strong> El sistema buscará el sistema operativo en el disco interno antes que en cualquier otro dispositivo.</p>
+<p class="image-container"><img alt="Orden de arranque seguro" src="img\\65aaf0fc4347ece3.png"></p>
+<p><strong>Complemento técnico:</strong> En sistemas UEFI, se pueden definir <em>Boot Entries</em> específicas, lo que permite asociar directamente un archivo EFI firmado (por ejemplo, <code>\EFI\Microsoft\Boot\bootmgfw.efi</code>). Esto refuerza la integridad del arranque al impedir el uso de cargadores no firmados.</p>
+<h2 is-upgraded>2.5. Otras opciones de seguridad (2 pt)</h2>
+<p><strong>Recomendaciones adicionales:</strong></p>
+<ul>
+<li><strong>Activar Secure Boot:</strong> Solo permite ejecutar software firmado digitalmente.<img alt="Activar Secure Boot" src="img\\85a3f46c500f05c.png"></li>
+<li><strong>Deshabilitar Wake on LAN (WoL):</strong> Evita el encendido remoto no autorizado.</li>
+<li><strong>Proteger físicamente la BIOS:</strong> Sellar o bloquear la carcasa del equipo.</li>
+<li><strong>Cifrar discos:</strong> En caso de sustracción física, los datos permanecerán inaccesibles.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Conclusión" duration="0">
+        <p>Un correcto bastionado de la BIOS/UEFI es la primera barrera de defensa en la seguridad de un sistema.</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
