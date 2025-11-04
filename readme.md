@@ -12,7 +12,7 @@ El propósito de este repositorio es **alojar y publicar tutoriales interactivos
 
 Ejemplo de publicación: `https://<tu-usuario>.github.io/mis-codelabs/`
 
-
+```
 mis-codelabs/
 ├── index.html ← Página principal con enlaces a los codelabs
 ├── mi-primer-codelab/ ← Codelab 1 (generado por claat)
@@ -23,7 +23,7 @@ mis-codelabs/
 └── otro-codelab/ ← Codelab 2 (otro ejemplo)
 ├── index.html
 └── ...
-
+```
 Cada subcarpeta (`mi-primer-codelab/`, `otro-codelab/`, etc.) es el resultado del comando `claat export`.
 
 ---
@@ -45,11 +45,9 @@ Cada subcarpeta (`mi-primer-codelab/`, `otro-codelab/`, etc.) es el resultado de
    ## Introducción
    Este es un codelab de ejemplo.
    ```
-
 2. Usa la herramienta claat para exportarlo:
-```
-claat export mi-nuevo-codelab.md
-```
-Esto generará una carpeta mi-nuevo-codelab/ con todos los archivos listos para la web.
-
+    ```
+    claat export mi-nuevo-codelab.md
+    ```
+    Esto generará una carpeta mi-nuevo-codelab/ con todos los archivos listos para la web.
 3. Mueve esa carpeta dentro de este repositorio (mis-codelabs/) y añade un enlace en index.html.
