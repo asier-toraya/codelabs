@@ -3,93 +3,249 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mis Codelabs</title>
+  <title>Asier Codelabs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --border: #e2e8f0;
+      --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --card-bg: #1e293b;
+        --text: #f8fafc;
+        --text-muted: #94a3b8;
+        --accent: #60a5fa;
+        --accent-hover: #3b82f6;
+        --border: #334155;
+        --shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: "Segoe UI", Roboto, sans-serif;
-      background: #f8f9fa;
-      color: #222;
-      margin: 0;
-      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
-    header {
-      background: #1a73e8;
-      color: white;
-      text-align: center;
-      padding: 2rem 1rem;
+
+    /* NAVBAR */
+    nav {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: var(--shadow);
     }
-    h1 {
-      margin: 0;
-      font-size: 2rem;
+
+    .nav-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    main {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-    .codelab-list {
-      list-style: none;
-      padding: 0;
-    }
-    .codelab-item {
-      background: white;
-      margin-bottom: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      padding: 1rem 1.5rem;
-      transition: transform 0.1s ease;
-    }
-    .codelab-item:hover {
-      transform: translateY(-3px);
-      background-color: #e9e9e9;
-    }
-    .codelab-item a {
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--accent);
       text-decoration: none;
-      color: #1a73e8;
-      font-weight: 600;
-      font-size: 1.1rem;
     }
+
+    .nav-links a {
+      margin-left: 1.5rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    /* HEADER */
+    header {
+      text-align: center;
+      padding: 4rem 1rem 2rem;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    /* MAIN CONTENT */
+    main {
+      flex: 1;
+      max-width: 900px;
+      margin: 2rem auto 4rem;
+      padding: 0 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.75rem;
+    }
+
+    .codelab-item {
+      width: 100%;
+      max-width: 600px; /* 🔹 límite para que no se estiren demasiado */
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem 2rem;
+      box-shadow: var(--shadow);
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    .codelab-item:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.15);
+    }
+
+    .codelab-content h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+
+    .codelab-description {
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .codelab-item::after {
+      content: '→';
+      position: absolute;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent);
+      font-size: 1.4rem;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .codelab-item:hover::after {
+      opacity: 1;
+      right: 1.2rem;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* FOOTER */
     footer {
       text-align: center;
-      padding: 1rem;
-      font-size: 0.9rem;
-      color: #555;
+      padding: 1.75rem 1rem;
+      border-top: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text-muted);
+      font-size: 0.95rem;
     }
-    h1 a {
-        color: rgb(192, 192, 192);
-        text-decoration: none;
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
     }
-    ul a {
-        text-decoration: none;
-        color: #1a73e8;
-        font-weight: 600;
-        font-size: 1.1rem;    
+
+    footer a:hover {
+      color: var(--accent-hover);
     }
-    
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      .nav-links a {
+        margin-left: 1rem;
+        font-size: 0.95rem;
+      }
+      .codelab-item {
+        max-width: 100%;
+        padding: 1.5rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>
-        <a href="https://github.com/asier-toraya" target="_blank">Asier</a>
+  <nav>
+    <div class="nav-content">
+      <a href="https://github.com/asier-toraya" target="_blank" class="logo">Asier Codelabs</a>
+      <div class="nav-links">
+        <a href="#">Inicio</a>
+        <a href="#">Docs</a>
+        <a href="https://github.com/asier-toraya" target="_blank">GitHub</a>
+      </div>
+    </div>
+  </nav>
 
-        codelabs tutorials</h1>
-    <p>Created with Google Codelab Tools</p>
+  <header>
+    <h1>Tutoriales de Codelab</h1>
+    <p>Guías técnicas creadas con Google Codelab Tools</p>
   </header>
+
   <main>
-    <ul class="codelab-list">
-        <a href="bastionado-bios-uefi/index.html">
-            <li class="codelab-item">
-                <p>Hardening BIOS UEFI</p>
-            </li>
-        </a>
-        <a href="bastionar-arranque-debian/index.html">
-            <li class="codelab-item">
-                <p>Hardening Debian Boot</p>
-            </li>
-        </a>
-    </ul>
+    <a href="bastionado-bios-uefi/index.html" class="codelab-item">
+      <div class="codelab-content">
+        <h3>🧩 Hardening BIOS UEFI</h3>
+        <p class="codelab-description">Learn how to secure your system's firmware and boot process</p>
+      </div>
+    </a>
+
+    <a href="bastionar-arranque-debian/index.html" class="codelab-item">
+      <div class="codelab-content">
+        <h3>🛡️ Hardening Debian Boot</h3>
+        <p class="codelab-description">Secure your Debian system from boot-level threats</p>
+      </div>
+    </a>
   </main>
+
   <footer>
     © 2025 - Made with ❤ by <a href="https://github.com/asier-toraya" target="_blank">Asier</a> 
     using <a href="https://github.com/googlecodelabs/tools" target="_blank">Google Codelab Tools</a>
