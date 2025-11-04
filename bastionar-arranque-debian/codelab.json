@@ -1,0 +1,26 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2025-11-04T21:25:14+01:00",
+  "id": "bastionar-arranque-debian",
+  "duration": 0,
+  "title": "Guía para Bastionar el Arranque de un Sistema Debian",
+  "summary": "Guía práctica para bastionar el arranque de un sistema Debian utilizando GRUB 2.",
+  "source": "codelab.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "linux",
+    "seguridad",
+    "grub"
+  ],
+  "tags": [
+    "debian"
+  ],
+  "feedback": "https://github.com/asier-toraya/",
+  "url": "bastionar-arranque-debian"
+}

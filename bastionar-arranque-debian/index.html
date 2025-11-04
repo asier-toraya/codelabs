@@ -1,0 +1,175 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Guía para Bastionar el Arranque de un Sistema Debian</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="bastionar-arranque-debian"
+                  title="Guía para Bastionar el Arranque de un Sistema Debian"
+                  environment="web"
+                  feedback-link="https://github.com/asier-toraya/">
+    
+      <google-codelab-step label="Introducción" duration="0">
+        <p>El arranque de un sistema Debian se gestiona mediante <strong>GRUB 2</strong>, un gestor que permite iniciar diferentes sistemas operativos y configuraciones del kernel. Dado que GRUB tiene acceso directo al kernel y a las opciones de arranque, <strong>bastionar esta fase</strong> es crítico para evitar accesos no autorizados o modificaciones maliciosas del sistema.</p>
+<p>Los principales archivos de configuración implicados son:</p>
+<ul>
+<li><code>/boot/grub/grub.cfg</code>: Configuración final del menú de arranque (no debe editarse manualmente).</li>
+<li><code>/etc/default/grub</code>: Archivo principal para modificar opciones de GRUB.</li>
+<li><code>/etc/grub.d/</code>: Contiene los scripts que construyen el archivo <code>grub.cfg</code>.</li>
+<li><code>/boot/grub/custom.cfg</code>: Archivo opcional para configuraciones personalizadas.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Ocultación del Menú de Arranque" duration="0">
+        <p><strong>Objetivo:</strong> impedir que usuarios no autorizados vean o seleccionen opciones de arranque alternativas.</p>
+<h2 is-upgraded>Pasos</h2>
+<ol type="1">
+<li>Abre el archivo de configuración de GRUB:<pre><code language="language-bash" class="language-bash">sudo nano /etc/default/grub
+</code></pre>
+</li>
+<li>Busca la línea:<pre><code>GRUB_TIMEOUT=5
+</code></pre>
+y cámbiala por:<pre><code>GRUB_TIMEOUT=0
+</code></pre>
+Esto hará que el menú no aparezca durante el arranque. <img alt="grub_timeout_0" src="img\\e4b9e91dc22ef4e1.png"></li>
+<li>(Opcional) También puedes añadir:<pre><code>GRUB_HIDDEN_TIMEOUT=0
+GRUB_HIDDEN_TIMEOUT_QUIET=true
+</code></pre>
+</li>
+<li>Guarda los cambios y actualiza GRUB:<pre><code language="language-bash" class="language-bash">sudo update-grub
+</code></pre>
+</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Configurar Contraseña para el Arranque" duration="0">
+        <p><strong>Objetivo:</strong> proteger el acceso al menú de GRUB y a la edición de las entradas del arranque.</p>
+<h2 is-upgraded>Opción 1: Contraseña en texto plano <em>(no recomendada)</em></h2>
+<ol type="1">
+<li>Edita el archivo de configuración personalizado:<pre><code language="language-bash" class="language-bash">sudo nano /etc/grub.d/40_custom
+</code></pre>
+</li>
+<li>Añade al final:<pre><code language="language-bash" class="language-bash">set superusers=&#34;root&#34;
+password root TU_CONTRASEÑA
+</code></pre>
+</li>
+<li>Guarda los cambios y actualiza GRUB:<pre><code language="language-bash" class="language-bash">sudo update-grub
+</code></pre>
+</li>
+</ol>
+<p class="image-container"><img alt="root_password" src="img\\393a62b18ec971fc.png"></p>
+<h2 is-upgraded>Opción 2: Contraseña cifrada <em>(recomendada)</em></h2>
+<ol type="1">
+<li>Genera una contraseña cifrada:<pre><code language="language-bash" class="language-bash">sudo grub-mkpasswd-pbkdf2
+</code></pre>
+Copia la cadena resultante (por ejemplo, empieza con <code>grub.pbkdf2.sha512...</code>).</li>
+<li>Añádela al archivo <code>/etc/grub.d/40_custom</code>:<pre><code language="language-bash" class="language-bash">set superusers=&#34;root&#34;
+password_pbkdf2 root grub.pbkdf2.sha512.10000...
+</code></pre>
+</li>
+<li>Protege el archivo para que solo root pueda leerlo:<pre><code language="language-bash" class="language-bash">sudo chmod 700 /etc/grub.d/40_custom
+</code></pre>
+</li>
+<li>Aplica los cambios:<pre><code language="language-bash" class="language-bash">sudo update-grub
+</code></pre>
+</li>
+</ol>
+<p>Resultado: Solo el usuario &#34;root&#34; podrá acceder a las opciones de edición del menú de arranque o arrancar con parámetros personalizados. <img alt="shield_root" src="img\\be188d6552599be0.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Copia de Seguridad de la Configuración" duration="0">
+        <p><strong>Objetivo:</strong> evitar pérdida o corrupción de la configuración del arranque.</p>
+<h2 is-upgraded>Pasos</h2>
+<ol type="1">
+<li>Crea una copia de los archivos principales:<pre><code language="language-bash" class="language-bash">sudo mkdir -p /root/backup-grub
+sudo cp /etc/default/grub /root/backup-grub/
+sudo cp -r /etc/grub.d /root/backup-grub/
+sudo cp /boot/grub/grub.cfg /root/backup-grub/
+</code></pre>
+<img alt="copies-main-archives" src="img\\a08ec36b0ce2c769.png"></li>
+<li>(Opcional) Comprime la copia:<pre><code language="language-bash" class="language-bash">sudo tar -czvf /root/backup-grub.tar.gz /root/backup-grub
+</code></pre>
+<img alt="archives-compression" src="img\\1af6d38847d16e44.png"></li>
+<li>Para restaurar la configuración, descomprime y reemplaza los archivos:<pre><code language="language-bash" class="language-bash">sudo tar -xzvf /root/backup-grub.tar.gz -C /
+sudo update-grub
+</code></pre>
+</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Otras Opciones de Seguridad" duration="0">
+        <h2 is-upgraded>a) Restringir permisos de archivos sensibles</h2>
+<p>Evita modificaciones accidentales o maliciosas:</p>
+<pre><code language="language-bash" class="language-bash">sudo chmod 600 /etc/default/grub
+sudo chmod 700 /etc/grub.d
+sudo chmod 700 /boot/grub
+</code></pre>
+<p class="image-container"><img alt="permissions-archives" src="img\\6d0028fec613cd20.png"></p>
+<h2 is-upgraded>b) Verificación de integridad (opcional, requiere <code>debsums</code>)</h2>
+<p>Verifica que los binarios de GRUB no hayan sido alterados:</p>
+<pre><code language="language-bash" class="language-bash">sudo debsums grub-common
+</code></pre>
+<h2 is-upgraded>c) Activar UEFI Secure Boot (si tu hardware lo permite)</h2>
+<p>Permite que solo se carguen binarios firmados durante el arranque, reforzando la seguridad del sistema.</p>
+<h2 is-upgraded>d) Cifrado del disco completo</h2>
+<p>Para máxima protección, configura <strong>LUKS</strong> (en la instalación o posteriormente) para cifrar <code>/boot</code> o todo el sistema.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Comprobación Final" duration="0">
+        <p>Después de aplicar los cambios:</p>
+<ol type="1">
+<li>Reinicia el sistema:<pre><code language="language-bash" class="language-bash">sudo reboot
+</code></pre>
+</li>
+<li>Verifica:<ul>
+<li>El menú no aparece (oculto).</li>
+<li>Al pulsar una tecla como <code>Esc</code>, se solicita usuario y contraseña.</li>
+<li>El sistema arranca correctamente.</li>
+</ul>
+</li>
+</ol>
+<p><strong>Resultado esperado:</strong> Ahora el sistema requiere credenciales antes de permitir modificaciones o arranques no autorizados.</p>
+<p class="image-container"><img alt="root-login" src="img\\f8d7e22938278e90.png"></p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
