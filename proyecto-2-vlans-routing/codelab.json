@@ -1,0 +1,29 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2025-11-30T17:40:58+01:00",
+  "id": "proyecto-2-vlans-routing",
+  "duration": 0,
+  "title": "Proyecto 2 – Red 10.0.0.0/16 con VLAN y routing",
+  "summary": "",
+  "source": "codelab.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "redes",
+    "cisco",
+    "packet-tracer"
+  ],
+  "tags": [
+    "packet-tracer",
+    "routing",
+    "static-routing",
+    "vlan"
+  ],
+  "feedback": "\"\"",
+  "url": "proyecto-2-vlans-routing"
+}

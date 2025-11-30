@@ -1,0 +1,222 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Proyecto 2 – Red 10.0.0.0/16 con VLAN y routing</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="proyecto-2-vlans-routing"
+                  title="Proyecto 2 – Red 10.0.0.0/16 con VLAN y routing"
+                  environment="web"
+                  feedback-link="&#34;&#34;">
+    
+      <google-codelab-step label="Descripción general" duration="0">
+        <p>La topologia se esta haciendo para 2 redes, En este proyecto se diseña y configura en Cisco Packet Tracer una red basada en la dirección <strong>10.0.0.0/16</strong>, con:</p>
+<ul>
+<li>Segmentación por <strong>VLAN</strong> en los <strong>switches</strong>.</li>
+<li>Cada <strong>router</strong> trabajando con su propia subred.</li>
+<li>Configuración de <strong>direcciones IPv4</strong>, <strong>máscaras</strong>, <strong>default gateway</strong> y <strong>puertos de enlace</strong>.</li>
+<li>Configuración de <strong>rutas estáticas</strong> entre routers.</li>
+<li>Guardado de la configuración con el comando <code>write memory</code>.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Definir la red y las subredes" duration="0">
+        <ol type="1">
+<li>Decidir <strong>qué red se va a usar</strong>:<ul>
+<li>Red base: <strong>10.0.0.0/16</strong>.</li>
+</ul>
+</li>
+<li>Definir las <strong>subredes</strong> y los <strong>hosts</strong> que tendrá cada una.</li>
+<li>Aplicar <strong>segmentación por VLAN</strong> en los switches.</li>
+<li>Asignar a cada router <strong>su propia subred</strong>.</li>
+</ol>
+<p>El resultado de este paso es un esquema claro de subredes, VLAN y routers.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Crear la estructura en Cisco Packet Tracer" duration="0">
+        <ol type="1">
+<li>En <strong>Cisco Packet Tracer</strong>, crear la <strong>estructura de la red</strong>:<ul>
+<li>Colocar los <strong>dispositivos</strong> necesarios (routers, switches, hosts).</li>
+<li>Conectarlos con los <strong>enlaces</strong> correspondientes.</li>
+</ul>
+</li>
+<li>Verificar que la topología refleja la planificación de subredes y routers definida en el paso anterior.</li>
+</ol>
+<p class="image-container"><img alt="red" src="img\\36bb03144955761e.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Detallar las subredes y configurar los hosts" duration="0">
+        <ol type="1">
+<li>Definir los detalles de cada <strong>subred</strong>:<ul>
+<li>Número de <strong>dispositivos</strong> que pertenecerán a esa subred.</li>
+<li><strong>Dirección de red</strong> y <strong>máscara</strong> asociadas.</li>
+</ul>
+</li>
+</ol>
+<p class="image-container"><img alt="labels" src="img\\e1339a861898a2d5.png"></p>
+<ol type="1" start="2">
+<li>En los dispositivos finales (hosts), configurar:<ul>
+<li>La <strong>IPv4 Address</strong> correspondiente a la subred.</li>
+<li>La <strong>Subnet Mask</strong> de la subred.</li>
+<li>El <strong>Default Gateway</strong> (IP del router para esa subred).</li>
+</ul>
+</li>
+</ol>
+<p class="image-container"><img alt="config" src="img\\ca1a0c7c3977e12e.png"></p>
+<ol type="1" start="3">
+<li>Asegurarse de que en la configuración principal de cada dispositivo están correctamente establecidos:<ul>
+<li><code>ipv4 address</code></li>
+<li><code>subnet mask</code></li>
+<li><strong>Puerto de enlace</strong> (interfaz por la que sale el tráfico).</li>
+</ul>
+</li>
+</ol>
+<p class="image-container"><img alt="config" src="img\\ae8f80bbec83ea25.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Crear las VLAN en los switches" duration="0">
+        <ol type="1">
+<li>En los <strong>switches</strong>, establecer las <strong>VLAN</strong> necesarias.</li>
+<li>Utilizar la opción <strong>ADD</strong> para crear cada VLAN.</li>
+<li>Asignar a cada VLAN un <strong>nombre representativo</strong>.</li>
+</ol>
+<p class="image-container"><img alt="vlan" src="img\\aef7ead748ceaa8a.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Asociar interfaces a las VLAN" duration="0">
+        <ol type="1">
+<li>Añadir las VLAN en las <strong>interfaces conectadas al switch</strong>. Colocamos la primera interfaz que hace referencia al switch en TRUNK para que pueda llevar el trafico de todas las vlan</li>
+<li>Asignar cada <strong>puerto del switch</strong> a la VLAN que le corresponda según la subred y el dispositivo conectado.</li>
+<li>Verificar que todos los puertos usados por los dispositivos están correctamente asociados a su VLAN.</li>
+</ol>
+<p class="image-container"><img alt="router" src="img\\d4f688293f5f9017.png"><img alt="vlan" src="img\\9109d04ce2aa8650.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Configurar las interfaces que van a recibir los VLAN&#39;s" duration="0">
+        <ol type="1">
+<li>Configurar en el router la <strong>primera interfaz</strong> que hace referencia a la subred correspondiente.</li>
+<li>Establecer en esa interfaz la <strong>dirección IPv4</strong> y la <strong>máscara</strong> según el esquema de subredes definido (por ejemplo, la configuración indicada en el documento para direcciones como <code>10.0.1.65 255.255.255.192</code>).</li>
+<li>Repetir el proceso para las demás interfaces del router que deban dar servicio a otras subredes.</li>
+<li>Al finalizar este paso, el router queda configurado para las subredes que gestiona.</li>
+</ol>
+<pre><code language="language-enable" class="language-enable">configure terminal
+int fal/0.10
+description VLAN10
+encapsulation dot1q 10
+ip address 10.0.0.1 255.255.255.128
+exit
+
+#Repetimos con la siguiente VLAN
+
+int fal/0.20
+description VLAN20
+encapsulation dot1q 20
+ip address 10.0.1.65 255.255.255.192
+exit
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Configurar IPv4 en los enlaces entre routers" duration="0">
+        <ol type="1">
+<li>Configurar la <strong>IPv4</strong> y la <strong>máscara</strong> en las interfaces de los routers utilizadas para enlazarlos entre sí.</li>
+<li>Verificar que:<ul>
+<li>Cada enlace entre routers tiene una subred claramente definida.</li>
+<li>Las direcciones en cada extremo del enlace son coherentes entre sí.</li>
+</ul>
+</li>
+<li>Comprobar conectividad básica (<code>ping</code>) entre routers a través de esas interfaces.</li>
+</ol>
+<p class="image-container"><img alt="router" src="img\\5b2316bc693ffd4b.png"></p>
+<p class="image-container"><img alt="router" src="img\\9c7d58e367da5a80.png"></p>
+<p class="image-container"><img alt="router" src="img\\f080ef2451dd80e0.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Configurar el enrutamiento estático" duration="0">
+        <ol type="1">
+<li>Configurar el <strong>enrutamiento estático</strong> (rutas estáticas) en los routers de las subredes:<ul>
+<li>Añadir rutas que permitan llegar al resto de subredes a través del router principal.</li>
+</ul>
+</li>
+<li>Repetir la configuración de rutas estáticas en los routers de las subredes (en el documento se mencionan específicamente <strong>Router0</strong> y <strong>Router1</strong>).</li>
+<li>En el router que conecta directamente con <strong>Internet</strong> (<strong>Router2</strong>):<ul>
+<li>Añadir <strong>todas las direcciones de red de las subredes</strong> como rutas estáticas.</li>
+<li>Asegurarse de que Router2 conoce todas las redes internas.</li>
+</ul>
+</li>
+</ol>
+<p class="image-container"><img alt="router" src="img\\481e9389179e6e93.png"></p>
+<p class="image-container"><img alt="router" src="img\\b65c7d672085a229.png"></p>
+<p class="image-container"><img alt="router" src="img\\a980c57433733f80.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Guardar la configuración" duration="0">
+        <ol type="1">
+<li>En <strong>cada switch y router</strong>, guardar la configuración con el comando:<pre><code language="language-text" class="language-text">write memory
+</code></pre>
+</li>
+<li>Confirmar que, tras guardar, la configuración permanece aunque se reinicie el dispositivo.</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Resultado final" duration="0">
+        <p>Al completar estos pasos:</p>
+<ul>
+<li>La red <strong>10.0.0.0/16</strong> queda dividida en <strong>subredes</strong>, cada una asociada a <strong>VLAN</strong> concretas en los switches.</li>
+<li>Cada <strong>router</strong> gestiona su subred correspondiente con las <strong>interfaces IPv4</strong> configuradas.</li>
+<li>El <strong>routing estático</strong> permite la comunicación entre todas las subredes.</li>
+<li>El <strong>router conectado a Internet</strong> conoce todas las redes internas.</li>
+<li>Toda la configuración está <strong>guardada</strong> de forma permanente en los switches y routers.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
