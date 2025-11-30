@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -118,7 +119,8 @@
 
     .codelab-item {
       width: 100%;
-      max-width: 600px; /* 🔹 límite para que no se estiren demasiado */
+      max-width: 600px;
+      /* 🔹 límite para que no se estiren demasiado */
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -194,18 +196,27 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @media (max-width: 768px) {
       header h1 {
         font-size: 2rem;
       }
+
       .nav-links a {
         margin-left: 1rem;
         font-size: 0.95rem;
       }
+
       .codelab-item {
         max-width: 100%;
         padding: 1.5rem;
@@ -213,6 +224,7 @@
     }
   </style>
 </head>
+
 <body>
   <nav>
     <div class="nav-content">
@@ -233,22 +245,31 @@
   <main>
     <a href="bastionado-bios-uefi/index.html" class="codelab-item">
       <div class="codelab-content">
-        <h3>🧩 Hardening BIOS UEFI</h3>
+        <h3> Hardening BIOS UEFI</h3>
         <p class="codelab-description">Learn how to secure your system's firmware and boot process</p>
       </div>
     </a>
 
     <a href="bastionar-arranque-debian/index.html" class="codelab-item">
       <div class="codelab-content">
-        <h3>🛡️ Hardening Debian Boot</h3>
+        <h3> Hardening Debian Boot</h3>
         <p class="codelab-description">Secure your Debian system from boot-level threats</p>
+      </div>
+    </a>
+    <a href="proyecto-2-vlans-routing/index.html" class="codelab-item">
+      <div class="codelab-content">
+        <h3> VLANs y Routing</h3>
+        <p class="codelab-description">
+          Configuración de VLANs y Routing en Cisco Packet Tracer
+        </p>
       </div>
     </a>
   </main>
 
   <footer>
-    © 2025 - Made with ❤ by <a href="https://github.com/asier-toraya" target="_blank">Asier</a> 
+    © 2025 - Made with ❤ by <a href="https://github.com/asier-toraya" target="_blank">Asier</a>
     using <a href="https://github.com/googlecodelabs/tools" target="_blank">Google Codelab Tools</a>
   </footer>
 </body>
+
 </html>
